@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: slab-nlp
+Version: 0.0.2
+Summary: A package for slab
+Home-page: https://github.com/46319943/slab
+Author: Piao Yang
+Author-email: 495384481@qq.com
+License: UNKNOWN
+Description: # SLab utils package
+        A python package for slab
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

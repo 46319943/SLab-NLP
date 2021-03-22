@@ -1,0 +1,7 @@
+pathlib
+requests
+aiohttp
+asyncio
+pymongo
+pandas
+scrapy
