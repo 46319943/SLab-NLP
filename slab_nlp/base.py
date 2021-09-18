@@ -1,8 +1,11 @@
-from matplotlib import pyplot as plt
+import matplotlib
+import matplotlib.pyplot as plt
 from pathlib import Path
 import numpy as np
 import pandas as pd
 from slab_utils.pickle_util import pickle_to_file, unpickle_from_file
+from typing import *
+import math
 
 # 设置画图支持中文的字体
 plt.rcParams['font.sans-serif'] = ['SimHei']
@@ -25,6 +28,17 @@ def word_segment_list_to_dictionary_corpus(word_segment_list):
     corpus = [dictionary.doc2bow(word_segment) for word_segment in word_segment_list]
 
     return dictionary, corpus
+
+
+def time_slice_to_timestamps(time_slice):
+    timestamps = []
+    for time_index, time_count in enumerate(time_slice):
+        for i in range(time_count):
+            timestamps.append(time_index)
+    return timestamps
+
+
+# def save_dir()
 
 
 class SLabModel():

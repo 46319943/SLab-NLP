@@ -10,6 +10,12 @@ class DtmlModelSLab():
                  namespace: str,
                  docs: List[str],
                  time_slice: List[int]):
+        '''
+        初始化存储空间和分析的文本
+        :param namespace:
+        :param docs:
+        :param time_slice: 每个时间切片对应的文本实体数量
+        '''
         self.namespace = namespace
         Path(namespace).mkdir(exist_ok=True, parents=True)
 
@@ -23,9 +29,11 @@ class DtmlModelSLab():
         self.topic_index_list = None
         self.dtm_model = None
 
+
     def model(self,
               topic_num_best: int = None,
               topic_num_list: List[int] = range(2, 22, 2)):
+
         pkuseg = PKUSegment()
 
         docs_segmented = list()
@@ -54,16 +62,21 @@ class DtmlModelSLab():
         self.word_segment_list = word_segment_list
         self.tag_segment_list = tag_segment_list
         self.docs = docs_segmented
+
+        # 有的文本在经过分词筛选之后，可能为空。该时间切片对应的文本数量就减少了
         self.time_slice = time_slice_segmented
 
-        lda_model = LdaModelSLab(self.namespace, docs_segmented)
-        lda_model.word_segment_list = word_segment_list
-        lda_model.corpus = corpus
-        lda_model.dictionary = dictionary
 
         # 计算最佳主题数量
         if topic_num_best is None:
-            coherence_list, coherence_best, model_best, topic_num_best = lda_model.select_best_topic_num(topic_num_list)
+
+            lda_model = LdaModelSLab(self.namespace, docs_segmented)
+            lda_model.word_segment_list = word_segment_list
+            lda_model.corpus = corpus
+            lda_model.dictionary = dictionary
+
+            coherence_list, coherence_best, model_best, topic_num_best = lda_model.model_auto_select(topic_num_list)
+
         self.topic_num = topic_num_best
 
         # 训练模型
@@ -98,6 +111,14 @@ class DtmlModelSLab():
         return instance
 
     def draw_topics(self, topn=10):
+        '''
+        绘制各个主题的词频图
+        并统计每个主题的文档数量
+        :param topn:
+        :return:
+        '''
+
+        # 循环绘制每个主题
         for topic_index in range(self.topic_num):
             self.draw_topic(topic_index, topn)
 
@@ -107,10 +128,17 @@ class DtmlModelSLab():
         df_topic.loc[:, 'count'] = 1
         df_g = df_topic.groupby('topic').size()
 
-        df_g.boxplot()
+        df_g.barplot()
         plt.savefig(f'{self.namespace}/dtm_topic_num.png')
 
     def draw_topic(self, topic_index: int, topn=10):
+        '''
+        绘制单个主题的词频图
+        :param topic_index:
+        :param topn:
+        :return:
+        '''
+
         time_length = len(self.time_slice)
 
         x = range(time_length)
@@ -161,6 +189,8 @@ class DtmlModelSLab():
         plt.show()
         plt.savefig(f'{self.namespace}/dtm_topic{topic_index}.png')
 
+
+    # TODO: 删除方法
     def print_topic_all_time_slice(self, topic_index, topn=10):
         time_index = 0
         while True:
