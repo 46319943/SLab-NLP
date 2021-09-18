@@ -66,7 +66,7 @@ class PKUSegment(BaseSegment):
                      ):
         # word_segment, tag_segment = self.segment_model.cut(text)
         # word_tag_segment = list(zip(word_segment, tag_segment))
-        word_tag_segment = self.segment_model.cut(text)
+        word_tag_segment = self.segment_model.cut(text.strip())
 
         # TODO: 重构抽离
 
@@ -94,7 +94,7 @@ class PaddleLACSegment(BaseSegment):
                      include_tag_list: List[str] = [],
                      min_length: int = 0
                      ):
-        word_segment, tag_segment = self.segment_model.cut(text=[text], return_tag=True)[0]
+        word_segment, tag_segment = self.segment_model.cut(text=[text.strip()], return_tag=True)[0]
         word_tag_segment = list(zip(word_segment, tag_segment))
         if len(include_tag_list) == 0:
             include_tag_list = PaddleLACSegment.tag_list
