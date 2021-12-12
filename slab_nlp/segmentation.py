@@ -96,10 +96,13 @@ class PaddleLACSegment(BaseSegment):
                      ):
         word_segment, tag_segment = self.segment_model.cut(text=[text.strip()], return_tag=True)[0]
         word_tag_segment = list(zip(word_segment, tag_segment))
+
+        # TODO: 写错了，要按照上面PKU的进行修改
         if len(include_tag_list) == 0:
             include_tag_list = PaddleLACSegment.tag_list
         word_segment, tag_segment = list(zip(
             *[[word, tag] for word, tag in word_tag_segment
               if word not in stop_word_list and tag in include_tag_list and len(word) >= min_length]
         ))
+
         return word_segment, tag_segment
