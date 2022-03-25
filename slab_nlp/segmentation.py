@@ -52,6 +52,7 @@ class BaseSegment():
 
 
 class PKUSegment(BaseSegment):
+    # https://github.com/lancopku/pkuseg-python/blob/master/tags.txt
     tag_list = ['n', 't', 's', 'f', 'm', 'q', 'b', 'r', 'v', 'a', 'z', 'd', 'p', 'c', 'u', 'y', 'e', 'o', 'i', 'l', 'j',
                 'h', 'k', 'g', 'x', 'w', 'nr', 'ns', 'nt', 'nx', 'nz', 'vd', 'vn', 'vx', 'ad', 'an']
 
