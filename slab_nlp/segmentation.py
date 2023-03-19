@@ -61,18 +61,31 @@ class PKUSegment(BaseSegment):
 
     def segment_text(self,
                      text: str,
-                     stop_word_list: List[str] = [],
-                     include_tag_list: List[str] = [],
+                     stop_word_list: List[str] = None,
+                     include_tag_list: List[str] = None,
+                     exclude_tag_list: List[str] = None,
                      min_length: int = 0
                      ):
         # word_segment, tag_segment = self.segment_model.cut(text)
         # word_tag_segment = list(zip(word_segment, tag_segment))
+
+        if include_tag_list is None:
+            include_tag_list = []
+        if exclude_tag_list is None:
+            exclude_tag_list = []
+        if stop_word_list is None:
+            stop_word_list = []
+
         word_tag_segment = self.segment_model.cut(text.strip())
 
         # TODO: 重构抽离
 
+
         if len(include_tag_list) == 0:
             include_tag_list = PKUSegment.tag_list
+        if len(exclude_tag_list) != 0:
+            include_tag_list = include_tag_list.
+
         word_tag_segment_filter = list(zip(
             *[[word, tag] for word, tag in word_tag_segment
               if word not in stop_word_list and tag in include_tag_list and len(word) >= min_length]

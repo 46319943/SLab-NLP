@@ -1,1 +1,6 @@
-*.pkl
+.idea
+.pytest_cache
+build
+dist
+*.egg-info
+test
